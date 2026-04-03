@@ -60,22 +60,29 @@ canvas.addEventListener("mouseup", () => {
 });
 
 // DRAG PANEL
-const panel = document.getElementById("panel");
+const panel = document.getElementById("panel");        
+const header = document.getElementById("panel-header"); 
+
 let isDragging = false, offsetX, offsetY;
 
-panel.addEventListener("mousedown", (e) => {
+header.addEventListener("mousedown", (e) => {
   isDragging = true;
-  offsetX = e.offsetX;
-  offsetY = e.offsetY;
+
+  const rect = panel.getBoundingClientRect();
+  offsetX = e.clientX - rect.left;
+  offsetY = e.clientY - rect.top;
 });
 
 document.addEventListener("mousemove", (e) => {
   if (!isDragging) return;
-  panel.style.left = e.pageX - offsetX + "px";
-  panel.style.top = e.pageY - offsetY + "px";
+
+  panel.style.left = e.clientX - offsetX + "px";
+  panel.style.top = e.clientY - offsetY + "px";
 });
 
-document.addEventListener("mouseup", () => isDragging = false);
+document.addEventListener("mouseup", () => {
+  isDragging = false;
+});
 
 // CLASSIFICATION
 function classify() {
