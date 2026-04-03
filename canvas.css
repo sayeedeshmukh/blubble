@@ -1,0 +1,117 @@
+body {
+  margin: 0;
+  font-family:"Cherry Bomb One", system-ui;
+  overflow: hidden;
+  background-color: #d4ecff;
+}
+
+.cherry-bomb-one-regular {
+  font-family: "Cherry Bomb One", system-ui;
+  font-weight: 100;
+  font-style: normal;
+}
+
+
+.title {
+  text-align: center;
+  color: #170055;
+  margin-top: 10px;
+    font-size: 45px;
+}
+
+.corals img{
+  position: absolute;
+  bottom: 20%;
+  height: 300px;
+}
+
+#coral1{
+  position: absolute;
+  left: 20%;
+  rotate: 10deg;
+}
+
+#coral2{
+  position: absolute;
+  left: -2%;
+  rotate: 15deg;
+}
+
+#coral3{
+  position: absolute;
+  right: -3%;
+  rotate: -10deg;
+}
+
+#ocean {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(180deg, #d4ecff, #1e4f8f);
+}
+
+
+/* Buttons */
+button {
+  border-radius: 20px;
+  padding: 8px 14px;
+  margin: 5px;
+  border: none;
+  background: rgba(255,255,255,0.4);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+#panel {
+  position: absolute;
+  top: 120px;
+  right: 80px;
+  width: 320px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  cursor: move;
+}
+
+.panel-header {
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 10px;
+}
+
+canvas {
+  background: rgba(255,255,255,0.4);
+  border-radius: 10px;
+  margin: 10px;
+}
+
+/* Blub */
+.blub {
+  position: absolute;
+  width: 80px;
+  transition: transform 0.3s;
+}
+
+.blub:hover {
+  transform: scale(1.1);
+}
+
+/* Tooltip */
+.tooltip {
+  position: absolute;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  pointer-events: none;
+}

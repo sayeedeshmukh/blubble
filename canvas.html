@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blubble</title>
+     <link rel="stylesheet" href="canvas.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Molle:ital@1&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<h1 class="title">bLUbbLE</h1>
+
+<button id="createBtn">Create Blub</button>
+<button id="deleteModeBtn">Delete</button>
+<button id="clearAllBtn">Clear All</button>
+<button id="globalUndoBtn">Undo Last</button>
+
+<div id="ocean">
+
+  <div class="corals">
+  <img src="assets/corals 1.png" alt="" id="coral1">
+  <img src="assets/corals 3.png" alt="" id="coral2">
+  <img src="assets/corals 2.png" alt="" id="coral3">
+</div>
+
+</div>
+
+<!-- DRAW PANEL -->
+<div id="panel">
+  <div class="panel-header">DRAW YOUR BLUB</div>
+
+  <div class="tools">
+    <button id="brush">pencil</button>
+    <input type="color" id="brushColor">
+    <button id="eraser">eraser</button>
+    <button id="fill">fill</button>
+    <input type="color" id="fillColor">
+
+    <button id="undo">Undo</button>
+    <button id="save">Save</button>
+  </div>
+
+  <canvas id="canvas" width="300" height="300"></canvas>
+</div>
+
+
+
+<script src="canvas.js"></script>
+</body>
+</html>
