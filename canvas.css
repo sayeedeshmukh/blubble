@@ -48,7 +48,8 @@ body {
   position: absolute;
   bottom: -2%;
   z-index: 3;
-  width: 100%;  /* ← add this so children can use right/left % */
+  width: 100%;
+  pointer-events: none;  
 }
 
 #coral2 {
@@ -126,6 +127,26 @@ button {
   gap: 5px;
   padding: 10px;
   padding-left: 40px;
+}
+
+.size-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-left: 25%;
+}
+
+.size-group input[type="range"] {
+  width: 70px;
+  accent-color: #64b4ff;
+  cursor: pointer;
+}
+
+#brushSizeLabel {
+  font-size: 11px;
+  opacity: 0.75;
+  min-width: 16px;
+  text-align: center;
 }
 
 canvas {
@@ -249,7 +270,7 @@ canvas {
   line-height: 1.2;
   
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  animation: bubbleFloat 4s ease-in-out infinite;
+  animation: bubbleFloat 3s ease-in-out infinite;
 }
 
 #clearAllBtn {

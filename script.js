@@ -41,17 +41,20 @@ canvas.addEventListener("mousedown", (e) => {
 canvas.addEventListener("mouseup", () => {
   drawing = false;
   ctx.beginPath();
+  ctx.globalCompositeOperation = "source-over";
 });
 
 canvas.addEventListener("mousemove", (e) => {
   if (!drawing) return;
+  const size = document.getElementById("brushSize").value;
   if (tool === "brush") {
+    ctx.globalCompositeOperation = "source-over"; 
     ctx.strokeStyle = brushColor.value;
-    ctx.lineWidth = 3;
+    ctx.lineWidth = size;
     ctx.lineCap = "round";
   } else if (tool === "eraser") {
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = 10;
+    ctx.globalCompositeOperation = "destination-out"; 
+    ctx.lineWidth = size;                              
     ctx.lineCap = "round";
   }
   ctx.lineTo(e.offsetX, e.offsetY);
@@ -152,18 +155,28 @@ function createBlub(data, type, name) {
 
   animateBlub(img, type);
 
+  let tip = null;
+
+
+//blub name  
   img.addEventListener("mouseenter", () => {
-    const tip = document.createElement("div");
+    tip = document.createElement("div");
     tip.className = "tooltip";
     tip.textContent = name;
-    tip.id = "active-tooltip";
-    const rect = img.getBoundingClientRect();
-    tip.style.position  = "fixed";
-    tip.style.left      = (rect.right + 8) + "px";
-    tip.style.top       = (rect.top + rect.height / 2) + "px";
-    tip.style.transform = "translateY(-50%)";
+    tip.style.position = "fixed";
     tip.style.pointerEvents = "none";
+    tip.style.display = "block";
     document.body.appendChild(tip);
+  });
+
+  img.addEventListener("mousemove", (e) => {
+    if (!tip) return;
+    tip.style.left = (e.clientX + 14) + "px";
+    tip.style.top  = (e.clientY - 10) + "px";
+  });
+
+  img.addEventListener("mouseleave", () => {
+    if (tip) { tip.remove(); tip = null; }
   });
 
   img.addEventListener("mouseleave", () => {
