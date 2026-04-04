@@ -6,6 +6,7 @@ let tool = "brush";
 let history = [];
 let blubs = JSON.parse(localStorage.getItem("blubs")) || [];
 let deleteMode = false;
+let hasUnsavedBlubs = blubs.length > 0;
 
 // COLORS
 const brushColor = document.getElementById("brushColor");
@@ -239,12 +240,16 @@ document.getElementById("save").onclick = () => {
   localStorage.setItem("blubs", JSON.stringify(blubs));
   history = [];
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  hasUnsavedBlubs = true;
+  showUnsavedBanner();
 };
 
 document.getElementById("clearAllBtn").onclick = () => {
   blubs = [];
   localStorage.removeItem("blubs");
   document.querySelectorAll(".blub").forEach(b => b.remove());
+  hasUnsavedBlubs = false;
+  hideUnsavedBanner();
 };
 
 document.getElementById("globalUndoBtn").onclick = () => {
@@ -253,6 +258,7 @@ document.getElementById("globalUndoBtn").onclick = () => {
   localStorage.setItem("blubs", JSON.stringify(blubs));
   document.querySelectorAll(".blub").forEach(b => b.remove());
   blubs.forEach(b => createBlub(b.data, b.type, b.name));
+  if (!blubs.length) { hasUnsavedBlubs = false; hideUnsavedBanner(); }
 };
 
 window.onload = () => {
