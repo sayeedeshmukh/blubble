@@ -177,11 +177,41 @@ function createBlub(data, type, name) {
 
 function animateBlub(el, type) {
   let t = 0;
+
+  // Random starting position and behavior
+  const speed = 0.4 + Math.random() * 0.7;       
+  const bobAmount = 10 + Math.random() * 20;      
+  const bobSpeed = 0.02 + Math.random() * 0.02;   
+  const swimSpeed = 0.4 + Math.random() * 0.5;    
+
+  let x = Math.random() * window.innerWidth;
+  let y = 80 + Math.random() * (window.innerHeight - 200);
+  let direction = Math.random() < 0.5 ? 1 : -1;  // 1 = right, -1 = left
+
+  el.style.position = "fixed";
+  el.style.left = x + "px";
+  el.style.top  = y + "px";
+
   (function move() {
-    t += 0.01;
-    el.style.transform = type === "coral"
-      ? `translateY(${Math.sin(t)*5}px)`
-      : `translate(${Math.sin(t)*50}px, ${Math.cos(t*0.5)*20}px)`;
+    t += bobSpeed;
+
+    // Move horizontally
+    x += swimSpeed * direction;
+
+    // Bounce off edges
+    if (x > window.innerWidth - 100) {
+      direction = -1;
+    } else if (x < 0) {
+      direction = 1;
+    }
+
+    // Vertical bob (sine wave)
+    const bobY = Math.sin(t) * bobAmount;
+
+    // Flip image based on direction
+    el.style.transform = `scaleX(${direction}) translateY(${bobY}px)`;
+    el.style.left = x + "px";
+
     requestAnimationFrame(move);
   })();
 }
@@ -218,3 +248,36 @@ window.onload = () => {
 };
 
 lucide.createIcons();
+
+
+function createBubble() {
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+
+  const size = 8 + Math.random() * 30;
+  const startX = Math.random() * window.innerWidth;
+  const duration = 4 + Math.random() * 8; // seconds to float up
+  const delay = Math.random() * 5;
+
+  bubble.style.cssText = `
+    position: fixed;
+    left: ${startX}px;
+    bottom: -50px;
+    width: ${size}px;
+    height: ${size}px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), rgba(255,255,255,0.05));
+    border: 1px solid rgba(255,255,255,0.5);
+    pointer-events: none;
+    z-index: 2;
+    animation: floatUp ${duration}s ${delay}s linear forwards;
+  `;
+
+  document.getElementById("ocean").appendChild(bubble);
+
+  // Remove after animation ends
+  setTimeout(() => bubble.remove(), (duration + delay) * 1000);
+}
+
+// Spawn bubbles continuously
+setInterval(() => createBubble(), 800);
