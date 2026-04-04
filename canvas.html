@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Blubble</title>
-     <link rel="stylesheet" href="canvas.css">
+    <link rel="stylesheet" href="canvas.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Molle:ital@1&display=swap" rel="stylesheet">
-</head>
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
 <body>
 
 <h1 class="title">bLUbbLE</h1>
@@ -27,24 +28,34 @@
 
 <!-- DRAW PANEL -->
 <div id="panel">
-  <div id="panel-header">DRAW YOUR BLUB</div>
-
-  <div class="tools">
-    <button id="brush">pencil</button>
-    <input type="color" id="brushColor">
-    <button id="eraser">eraser</button>
-    <button id="fill">fill</button>
-    <input type="color" id="fillColor">
-
-    <button id="undo">Undo</button>
-    <button id="save">Save</button>
+  <div id="panel-header">
+    DRAW YOUR BLUB
+    <button id="minimizeBtn"><p>▼</p></button>
   </div>
+  
+<div id="panel-body">
+  <div class="tools">
+    <div class="color-group">
+      <button id="brush" title="Pencil"><i data-lucide="pencil"></i></button>
+      <input type="color" id="brushColor">
+    </div>
 
-  <canvas id="canvas" width="300" height="300"></canvas>
+    <button id="eraser" title="Eraser"><i data-lucide="eraser"></i></button>
+    <button id="clearCanvas" title="Clear"><i data-lucide="trash-2"></i></button>
+
+    <div class="color-group">
+      <button id="fill" title="Fill"><i data-lucide="paint-bucket"></i></button>
+      <input type="color" id="fillColor">
+    </div>
+
+    <button id="undo" title="Undo"><i data-lucide="undo-2"></i></button>
+    <button id="save" title="Save"><i data-lucide="fish"></i></button>
+  </div>
 </div>
 
+  <canvas id="canvas" width="300" height="220"></canvas>
+</div>
 
-
-<script src="canvas.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

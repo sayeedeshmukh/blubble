@@ -37,9 +37,57 @@ canvas.addEventListener("mousemove", (e) => {
 
 // FILL TOOL
 document.getElementById("fill").onclick = () => {
-  ctx.fillStyle = fillColor.value;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  tool = "fill";
 };
+
+canvas.addEventListener("mousedown", (e) => {
+  if (tool === "fill") {
+    floodFill(e.offsetX, e.offsetY);
+    return;
+  }
+
+  drawing = true;
+});
+
+function floodFill(x, y) {
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imageData.data;
+
+  const targetColor = getPixelColor(data, x, y);
+  const fillCol = hexToRgb(fillColor.value);
+
+  if (colorsMatch(targetColor, fillCol)) return;
+
+  const stack = [[x, y]];
+
+  while (stack.length) {
+    const [cx, cy] = stack.pop();
+    const index = (cy * canvas.width + cx) * 4;
+
+    const currentColor = [
+      data[index],
+      data[index + 1],
+      data[index + 2],
+      data[index + 3]
+    ];
+
+    if (!colorsMatch(currentColor, targetColor)) continue;
+
+    // fill pixel
+    data[index] = fillCol.r;
+    data[index + 1] = fillCol.g;
+    data[index + 2] = fillCol.b;
+    data[index + 3] = 255;
+
+    // check neighbors
+    stack.push([cx + 1, cy]);
+    stack.push([cx - 1, cy]);
+    stack.push([cx, cy + 1]);
+    stack.push([cx, cy - 1]);
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+}
 
 // TOOL SWITCH
 document.getElementById("brush").onclick = () => tool = "brush";
@@ -84,17 +132,6 @@ document.addEventListener("mouseup", () => {
   isDragging = false;
 });
 
-// CLASSIFICATION
-function classify() {
-  let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  let count = 0;
-
-  for (let i = 0; i < imgData.data.length; i += 4) {
-    if (imgData.data[i] !== 255) count++;
-  }
-
-  return count > 3000 ? "animal" : "coral";
-}
 
 // CREATE BLUB
 function createBlub(data, type, name) {
@@ -155,6 +192,11 @@ function hideTooltip() {
   if (tooltip) tooltip.remove();
 }
 
+document.getElementById("clearCanvas").onclick = () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  history = []; // reset undo history
+};
+
 // SAVE
 document.getElementById("save").onclick = () => {
   let data = canvas.toDataURL();
@@ -174,21 +216,35 @@ window.onload = () => {
   blubs.forEach(b => createBlub(b.data, b.type, b.name));
 };
 
-// DELETE MODE
-document.getElementById("deleteModeBtn").onclick = () => {
-  deleteMode = !deleteMode;
-};
 
-// CLEAR ALL
 document.getElementById("clearAllBtn").onclick = () => {
-  localStorage.clear();
-  location.reload();
+  blubs = [];
+  localStorage.removeItem("blubs");
+
+  const blubElements = document.querySelectorAll(".blub");
+  blubElements.forEach(b => b.remove());
 };
 
 // GLOBAL UNDO
 document.getElementById("globalUndoBtn").onclick = () => {
+  if (blubs.length === 0) return;
+
   blubs.pop();
+
   localStorage.setItem("blubs", JSON.stringify(blubs));
-  location.reload();
+
+  const existingBlubs = document.querySelectorAll(".blub");
+  existingBlubs.forEach(b => b.remove());
+
+  blubs.forEach(b => createBlub(b.data, b.type, b.name));
 };
+
+  // clear all blubs from screen
+  const ocean = document.getElementById("ocean");
+  const existingBlubs = ocean.querySelectorAll(".blub");
+  existingBlubs.forEach(b => b.remove());
+
+  // re-render remaining blubs
+  blubs.forEach(b => createBlub(b.data, b.type, b.name));
+
 
