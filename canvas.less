@@ -1,12 +1,25 @@
+@primary-color: #170055;
+@bg-light: rgba(255,255,255,0.4);
+@bg-light-hover: rgba(255,255,255,0.5);
+@glass-bg: rgba(255,255,255,0.2);
+@font-main: "Cherry Bomb One", system-ui;
+@font-secondary: "Lexend Deca", sans-serif;
+
+// Mixins
+.glassmorphism(@bg, @blur) {
+  background: @bg;
+  backdrop-filter: blur(@blur);
+}
+
 body {
   margin: 0;
-  font-family:"Cherry Bomb One", system-ui;
+  font-family: @font-main;
   overflow: hidden;
   background-color: #d4ecff;
 }
 
 .cherry-bomb-one-regular {
-  font-family: "Cherry Bomb One", system-ui;
+  font-family: @font-main;
   font-weight: 100;
   font-style: normal;
 }
@@ -16,7 +29,7 @@ body {
   top: 2%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family:"Cherry Bomb One", system-ui;
+  font-family: @font-main;
   font-size: 120px;
   font-weight: 900;
   color: transparent;
@@ -66,20 +79,18 @@ body {
   background: linear-gradient(180deg, #CFF5FF, #235F76);
 }
 
-
 /* Buttons */
 button {
   border-radius: 20px;
   padding: 8px 14px;
   margin: 5px;
   border: none;
-  background: rgba(255,255,255,0.4);
-  backdrop-filter: blur(10px);
+  .glassmorphism(@bg-light, 10px);
   cursor: pointer;
 }
 
 #minimizeBtn {
-  background: rgba(255,255,255,0.5);
+  background: @bg-light-hover;
   border: none;
   border-radius: 50%;
   width: 24px;
@@ -90,9 +101,8 @@ button {
   text-align: center;
   cursor: pointer;
   flex-shrink: 0;  
-  color: #170055;
+  color: @primary-color;
 }
-
 
 #panel {
   position: absolute;
@@ -100,25 +110,23 @@ button {
   right: 80px;
   width: 320px;
   border-radius: 20px;
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(20px);
+  .glassmorphism(@glass-bg, 20px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
 
-#panel-header {
-  cursor: grab;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;  
-  padding: 10px 14px;
-  color: #170055;
-  font-family: "Lexend Deca", sans-serif;
-  font-weight: 800;
-}
+  &-header {
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;  
+    padding: 10px 14px;
+    color: @primary-color;
+    font-family: @font-secondary;
+    font-weight: 800;
 
-
-#panel-header:active {
-  cursor: grabbing;
+    &:active {
+      cursor: grabbing;
+    }
+  }
 }
 
 .tools {
@@ -134,12 +142,12 @@ button {
   align-items: center;
   gap: 5px;
   padding-left: 25%;
-}
 
-.size-group input[type="range"] {
-  width: 70px;
-  accent-color: #64b4ff;
-  cursor: pointer;
+  input[type="range"] {
+    width: 70px;
+    accent-color: #64b4ff;
+    cursor: pointer;
+  }
 }
 
 #brushSizeLabel {
@@ -150,7 +158,7 @@ button {
 }
 
 canvas {
-  background: rgba(255,255,255,0.4);
+  background: @bg-light;
   border-radius: 10px;
   margin: 10px;
 }
@@ -161,23 +169,22 @@ canvas {
   width: 300px;
   transition: transform 0.4s;
   z-index: 2;
-}
 
-.blub:hover {
-  transform: scale(1.1);
+  &:hover {
+    transform: scale(1.1);
+  }
 }
-
 
 /* Tooltip */
 .tooltip {
   position: absolute;
-  background: #170055;;
+  background: @primary-color;
   color: white;
   padding: 3px 8px;
   border-radius: 10px;
   font-size: 12px;
   pointer-events: none;
-  font-family: "Lexend Deca", sans-serif;
+  font-family: @font-secondary;
 }
 
 #brushColor, #fillColor {
@@ -188,12 +195,25 @@ canvas {
   padding: 0;
   cursor: pointer;
 
-  background: rgba(255,255,255,0.5);
-  backdrop-filter: blur(10px);
+  .glassmorphism(@bg-light-hover, 10px);
   box-shadow: 0 3px 8px rgba(0,0,0,0.1);
 
   display: inline-block;
   vertical-align: middle;
+
+  &::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+  }
+
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 
 .color-group {
@@ -202,27 +222,11 @@ canvas {
   gap: 6px;
 }
 
-#brushColor::-webkit-color-swatch,
-#fillColor::-webkit-color-swatch {
-  border: none;
-  border-radius: 50%;
-}
-
-#brushColor::-webkit-color-swatch-wrapper,
-#fillColor::-webkit-color-swatch-wrapper {
-  padding: 0;
-  border-radius: 50%;
-}
-
-#brushColor:hover, #fillColor:hover {
-  transform: scale(1.1);
-}
-
-#globalUndoBtn{
+#globalUndoBtn {
   left: 45%;
 }
 
-#clearAllBtn{
+#clearAllBtn {
   left: 51%;
 }
 
@@ -230,7 +234,7 @@ canvas {
   position: fixed;
   top: 20%;
   z-index: 10;
-  font-family: "Lexend Deca", sans-serif;
+  font-family: @font-secondary;
   font-weight: 800;
   
   /* Reset */
@@ -258,7 +262,6 @@ canvas {
     0 8px 32px rgba(0,80,200,0.25),
     0 2px 8px rgba(0,0,0,0.15);
   
-
   outline: 1.5px solid rgba(255,255,255,0.4);
   
   font-size: 15px;
@@ -269,6 +272,19 @@ canvas {
   
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   animation: bubbleFloat 3s ease-in-out infinite;
+
+  &:hover {
+    transform: scale(1.1) translateY(-4px);
+    box-shadow:
+      inset 0 -4px 12px rgba(0,80,200,0.2),
+      inset 0 4px 8px rgba(255,255,255,0.9),
+      0 16px 40px rgba(0,100,255,0.35),
+      0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  &:active {
+    transform: scale(0.96) translateY(0px);
+  }
 }
 
 #clearAllBtn {
@@ -279,19 +295,6 @@ canvas {
 #globalUndoBtn {
   right: 60px;
   animation-delay: 1.2s;
-}
-
-#clearAllBtn:hover, #globalUndoBtn:hover {
-  transform: scale(1.1) translateY(-4px);
-  box-shadow:
-    inset 0 -4px 12px rgba(0,80,200,0.2),
-    inset 0 4px 8px rgba(255,255,255,0.9),
-    0 16px 40px rgba(0,100,255,0.35),
-    0 4px 12px rgba(0,0,0,0.2);
-}
-
-#clearAllBtn:active, #globalUndoBtn:active {
-  transform: scale(0.96) translateY(0px);
 }
 
 @keyframes bubbleFloat {
@@ -319,5 +322,3 @@ canvas {
     opacity: 0;
   }
 }
-
-
